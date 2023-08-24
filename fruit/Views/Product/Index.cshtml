@@ -1,5 +1,33 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model IEnumerable<frute.Models.Category>
+
+    <h2>Productes</h2>
+
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Create New</a>
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var category in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => Product.Name)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@Product.Id">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@Product.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@Product.Id">Delete</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
