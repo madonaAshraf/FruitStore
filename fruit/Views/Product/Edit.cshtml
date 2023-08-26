@@ -5,10 +5,10 @@
     <style>
         .page-container {
             position: relative;
-            height: 100vh;
             padding-top: 150px;
-            padding-right: 1200px;
-            padding-left: 50px;
+           padding-left:30px;
+            padding-right:900px;
+            padding-bottom:20px;
         }
     </style>
 </head>
@@ -34,6 +34,10 @@
             <input type="text" class="form-control" asp-for="price" />
         </div>
         <div class="form-group">
+            <label for="image">Image URL:</label>
+            <input type="text" class="form-control" asp-for="image" />
+        </div>
+        <div class="form-group">
             <label for="AccountId">User Id:</label>
             <input type="text" class="form-control" asp-for="AccountId" />
         </div>
@@ -46,7 +50,7 @@
         <div class="form-group">
             <label for="InventoryId">Inventory:</label>
             <select class="form-control" asp-for="InventoryId" asp-items="@(new SelectList(ViewBag.Inventories, "Id", "Name"))">
-                <option value="">Select a category</option>
+                <option value="">Select a Inventory</option>
             </select>
         </div>
 

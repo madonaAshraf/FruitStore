@@ -51,8 +51,8 @@
         </div>
         <div class="form-group">
             <label for="InventoryId">Inventory:</label>
-            <select class="form-control" asp-for="InventoryId" asp-items="@(new SelectList(ViewBag.Categories, "Id", "Name"))">
-                <option value="">Select a category</option>
+            <select class="form-control" asp-for="InventoryId" asp-items="@(new SelectList(ViewBag.Inventories, "Id", "Name"))">
+                <option value="">Select a Inventory</option>
             </select>
         </div>
         <button type="submit" class="btn btn-primary">Create</button>

@@ -22,22 +22,24 @@ namespace fruit.Controllers
             var product = _context.Products.ToList();
             return View(product);
         }
-        [HttpGet(" Details/{id}")]
-        public IActionResult Detials(int id)
+        [HttpGet("Details/{id}")]
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var category = _context.Categories.FirstOrDefault(c => c.Id == id);
-            if (category == null)
+            var product = _context.Products.FirstOrDefault(c => c.ProductId == id);
+            if (product == null)
             {
                 return NotFound();
             }
-            return View(category);
+            ViewBag.Categories = _context.Categories.ToList();
+            return View(product);
 
         }
+
         [HttpGet("Create")]
         public IActionResult Create()
         {
@@ -45,6 +47,7 @@ namespace fruit.Controllers
             ViewBag.Inventories = _context.Inventories.ToList();
             return View();
         }
+
         [HttpPost("Create")]
         public IActionResult Create(Product product)
         {
@@ -114,6 +117,7 @@ namespace fruit.Controllers
             }
             return View(product);
         }
+
         [HttpPost("Delete/{id}")]
         public IActionResult DeleteConfirmed(int id)
         {
@@ -129,6 +133,8 @@ namespace fruit.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+
 
 
     }
