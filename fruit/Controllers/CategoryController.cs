@@ -5,7 +5,8 @@ using System.Diagnostics;
 
 namespace fruit.Controllers
 {
-    public class CategoryController : Controller
+	[Route("[controller]")]
+	public class CategoryController : Controller
     {
         private readonly ApplicationDbContext _context;
 
@@ -13,18 +14,19 @@ namespace fruit.Controllers
         {
             _context = context;
         }
-
+        [HttpGet]
         public IActionResult Index()
         {
             var category = _context.Categories.ToList();
             return View(category);
         }
-        [HttpGet ( " Details/{id}")] 
-        public IActionResult Detials (int id )
+        [HttpGet("Details/{id}")]
+        public IActionResult Details(int? id)
         {
-            if ( id == null ) {
+            if (id == null)
+            {
                 return NotFound();
-                    }
+            }
 
             var category = _context.Categories.FirstOrDefault( c => c.Id == id );
             if ( category == null )
@@ -34,7 +36,12 @@ namespace fruit.Controllers
             return View(category);
 
         }
-        [ HttpGet ("create")] 
+        [HttpGet("Create")]
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [ HttpPost ("Create")] 
         public IActionResult Create ( Category category ) {
         _context.Categories.Add( category );
             _context.SaveChanges();
@@ -42,7 +49,7 @@ namespace fruit.Controllers
 
         }
 
-        [ HttpGet("edit/{id}")]
+        [ HttpGet("Edit/{id}")]
         public IActionResult Edit ( int id  ) 
         {
 
@@ -98,21 +105,20 @@ namespace fruit.Controllers
             return View(category);
 
         }
-        [HttpPost ]
-        public IActionResult DeleteConfirmed ( int id)
+        [HttpPost("Delete/{id}")]
+        public IActionResult DeleteConfirmed(int id)
         {
             var category = _context.Categories.FirstOrDefault(c => c.Id == id);
 
+            if (category == null)
+            {
+                return NotFound();
+            }
+
             _context.Categories.Remove(category);
             _context.SaveChanges();
+
             return RedirectToAction(nameof(Index));
-
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

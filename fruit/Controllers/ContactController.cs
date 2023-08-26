@@ -5,7 +5,8 @@ using System.Diagnostics;
 
 namespace fruit.Controllers
 {
-    public class ContactController : Controller
+	[Route("[controller]")]
+	public class ContactController : Controller
     {
         private readonly ApplicationDbContext _context;
 
@@ -13,22 +14,17 @@ namespace fruit.Controllers
         {
             _context = context;
 
-
-
-
-
         }
+
+        [HttpGet("Create")]
         public IActionResult Index()
         {
-            var category = _context.Categories.ToList();
-            return View(category);
+            return View();
         }
-
-
-        [HttpGet("create")]
-        public IActionResult Create(Category category)
+        [HttpPost("Create")]
+        public IActionResult Create(Contact contact)
         {
-            _context.Categories.Add(category);
+            _context.Contacts.Add(contact);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
 

@@ -5,7 +5,8 @@ using System.Diagnostics;
 
 namespace fruit.Controllers
 {
-    public class OrderController : Controller
+	[Route("[controller]")]
+	public class OrderController : Controller
     {
         private readonly ApplicationDbContext _context;
 
@@ -13,26 +14,40 @@ namespace fruit.Controllers
         {
             _context = context;
 
-
-
-
-
         }
-        public IActionResult Index()
+        public IActionResult Index(int id)
         {
-            var category = _context.Categories.ToList();
-            return View(category);
+            var product = _context.Products.FirstOrDefault(c => c.ProductId == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            ViewBag.Categories = _context.Categories.ToList();
+            ViewBag.Inventories = _context.Inventories.ToList();
+            return View(new Order { ProductId = product.ProductId, Product = product });
+
         }
 
 
-        [HttpGet("create")]
-        public IActionResult Create(Category category)
+        [HttpPost("Create")]
+        public IActionResult Create(Order order)
         {
-            _context.Categories.Add(category);
-            _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            if (ModelState.IsValid)
+            {
+                var user = _context.Accounts.FirstOrDefault(u => u.AccountId == order.AccountId);
 
+                if (user != null)
+                {
+                    order.Account = user;
+                    _context.Orders.Add(order);
+                    _context.SaveChanges();
+
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            return View(order);
         }
+
 
 
 

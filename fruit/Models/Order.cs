@@ -18,5 +18,7 @@ namespace fruit.Models
         public int total { get; set; }
         public int AccountId { get; set; }
         public Account Account { get; set; }
+        public Product Product { get;  set; }
+        public int ProductId { get;  set; }
     }
 }

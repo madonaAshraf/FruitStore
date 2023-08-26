@@ -6,7 +6,8 @@ using System.Diagnostics;
 
 namespace fruit.Controllers
 {
-    public class AccountController : Controller
+	[Route("[controller]")]
+	public class AccountController : Controller
     {
 
 
@@ -16,7 +17,13 @@ namespace fruit.Controllers
         {
             _context = context;
         }
-        [HttpGet("create")]
+      
+        [HttpGet("Create")]
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost("Create")]
         public IActionResult Create(Account account)
         {
            
@@ -27,11 +34,15 @@ namespace fruit.Controllers
                _context.SaveChanges();
 
             }
-            return View(account);
-
+            return RedirectToAction("Index", "Home");
+        }
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
         }
 
-      [HttpGet("logIn")]
+        [HttpPost("logIn")]
         public IActionResult Login ( string email, string password)
         {
 
@@ -42,7 +53,7 @@ namespace fruit.Controllers
             }
 
 
-            return View(Account);   
+            return RedirectToAction("Index", "Home");
 
         }
 

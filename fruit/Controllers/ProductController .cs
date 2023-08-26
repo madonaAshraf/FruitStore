@@ -5,6 +5,7 @@ using System.Diagnostics;
 
 namespace fruit.Controllers
 {
+    [Route("[controller]")]
     public class ProductController : Controller
     {
 
@@ -18,8 +19,8 @@ namespace fruit.Controllers
 
         public IActionResult Index()
         {
-            var category = _context.Categories.ToList();
-            return View(category);
+            var product = _context.Products.ToList();
+            return View(product);
         }
         [HttpGet(" Details/{id}")]
         public IActionResult Detials(int id)
@@ -37,87 +38,96 @@ namespace fruit.Controllers
             return View(category);
 
         }
-        [HttpGet("create")]
-        public IActionResult Create(Category category)
+        [HttpGet("Create")]
+        public IActionResult Create()
         {
-            _context.Categories.Add(category);
-            _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
-
+            ViewBag.Categories = _context.Categories.ToList();
+            ViewBag.Inventories = _context.Inventories.ToList();
+            return View();
         }
-
-        [HttpGet("edit/{id}")]
-        public IActionResult Edit(int id)
+        [HttpPost("Create")]
+        public IActionResult Create(Product product)
         {
-
-
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var category = _context.Categories.FirstOrDefault(c => c.Id == id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-            return View(category);
-
-        }
-
-        [HttpPost]
-        public IActionResult Edit(Category category)
-        {
-
-
-            if (category.Id == 0)
-
-            {
-                return NotFound();
-            }
             if (ModelState.IsValid)
             {
-                _context.Update(category);
+                _context.Products.Add(product);
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
-
             }
 
-            return View(category);
-
+            ViewBag.Categories = _context.Categories.ToList();
+            ViewBag.Inventories = _context.Inventories.ToList();
+            return View(product);
         }
-        [HttpGet(" delete/{id}")]
-        public IActionResult Delete(int id)
-        {
 
+        [HttpGet("Edit/{id}")]
+        public IActionResult Edit(int? id)
+        {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var category = _context.Categories.FirstOrDefault(c => c.Id == id);
-            if (category == null)
+            var product = _context.Products.FirstOrDefault(c => c.ProductId == id);
+            if (product == null)
             {
                 return NotFound();
             }
-            return View(category);
 
+            ViewBag.Categories = _context.Categories.ToList();
+            ViewBag.Inventories = _context.Inventories.ToList();
+            return View(product);
         }
-        [HttpPost]
+
+        [HttpPost("Edit/{id}")]
+        public IActionResult Edit(Product product)
+        {
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                _context.Update(product);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewBag.Categories = _context.Categories.ToList();
+            ViewBag.Inventories = _context.Inventories.ToList();
+            return View(product);
+        }
+
+        [HttpGet("Delete/{id}")]
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var product = _context.Products.FirstOrDefault(c => c.ProductId == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return View(product);
+        }
+        [HttpPost("Delete/{id}")]
         public IActionResult DeleteConfirmed(int id)
         {
-            var category = _context.Categories.FirstOrDefault(c => c.Id == id);
+            var product = _context.Products.FirstOrDefault(c => c.ProductId == id);
 
-            _context.Categories.Remove(category);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            _context.Products.Remove(product);
             _context.SaveChanges();
+
             return RedirectToAction(nameof(Index));
-
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
 

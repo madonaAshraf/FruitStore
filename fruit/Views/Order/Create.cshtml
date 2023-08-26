@@ -1,13 +1,13 @@
-﻿@model fruit.Models.Category
+﻿@model fruit.Models.Order
 
 <h2>Create Order</h2>
 
 <form asp-action="Create">
     <input hidden asp-for="OrderId">
     <div class="form-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
+        <label asp-for="Customer_name"></label>
+        <input asp-for="Customer_name" class="form-control" />
+        <span asp-validation-for="Customer_name" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary">Create</button>
 </form>
